@@ -10,6 +10,8 @@ biznetgio/
 *.sqlite
 *.db
 
+$HOME/
+
 # Dynamic local panel runtime configuration (Selalu tersimpan sebagai {} di Git/GitHub)
 config/panel_config.json
 
