@@ -1,157 +1,108 @@
-# 🏪 Bebey Store — Professional Discord Payment & Ticketing Bot
+<div align="center">
 
-Bot Discord Pembayaran & Manajemen Toko Otomatis 24/7 yang dilengkapi dengan Sistem Tiket Privat, Verifikasi API Roblox Real-Time, Sistem Kode Unik 3 Digit, Ekspor Laporan Penjualan Excel (`.xlsx`) Keseluruhan (*All-Time*) & Bulanan, serta Integrasi Dual Database (Supabase Cloud & Native SQLite).
+# Discord Payment Bot
 
----
+**Bot Discord untuk toko produk digital** — katalog item, checkout QRIS, tiket order otomatis, panel admin, dan laporan Excel bulanan.
 
-## 🌟 Fitur Utama (Key Features)
+[![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)](#)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
+[![discord.js](https://img.shields.io/badge/discord.js-v14-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.js.org)
 
-- 🎛️ **Admin Control Panel GUI (`/adminpanel`)**: Interactive Dashboard GUI khusus Admin untuk mengelola seluruh aspek toko (Item, Kategori, Global Private World, Panel Toko, Leaderboard, Export Excel All-Time, & Admin) secara visual via Tombol, Dropdown Menu, & Modal Form.
-- 🌐 **Global & Category Private World / Server Link**: Admin dapat mengatur 1 URL Link Private Server Toko secara terpusat dari `/adminpanel`, dan mengaktifkan/mematikan akses Private World per **Kategori**. Produk in-game otomatis menampilkan link direct & panduan 5-langkah bertransaksi di server private.
-- 🛒 **Draf Keranjang Belanja & Sub-Kategori Dropdown**: Pembeli dapat menambah berbagai item dari kategori lain yang mengaktifkan mode keranjang sebelum membuat tiket.
-- ⏱️ **Ticket Auto-Cleanup 30 Menit**: Pembersihan otomatis tiket inaktif tanpa kelanjutan transaksi yang berumur lebih dari **30 menit** (di-scan berkala setiap 2 menit).
-- 🗑️ **Hapus Row Database Langsung dari Panel (`/adminpanel`)**: Admin dapat menghapus baris transaksi tertentu dari database SQLite / Supabase secara langsung via Form Modal dengan memasukkan Order ID.
-- 🛡️ **Keamanan Ketat & Anti-Exploit**: Otentikasi Admin terverifikasi di seluruh tombol/modal admin, validasi jumlah pesanan (anti-overflow), serta Prepared Statements SQLite untuk mencegah SQL Injection.
-- 📁 **Dropdown Select Menu Kategori & Checkbox Setting**: Pengelolaan kategori produk via dropdown otomatis + opsi centang checkbox (`Perlu Username`, `Cek Limit`, `⛔ Tahan Produk / Non-aktifkan`).
-- ⏸️ **Fitur Tahan Produk (Out of Stock / Maintenance)**: Admin dapat menahan produk agar tidak dapat dibeli untuk sementara *(Nama produk tercoret di katalog & otomatis ditolak jika dipilih)*.
-- 🛑 **Proteksi Presisi Validasi Roblox**: Memvalidasi Username Roblox pembeli secara langsung ke Database API Resmi Roblox **sebelum channel tiket dibuat**. Pembuatan tiket diblokir jika username tidak terdaftar.
-- 🔢 **Sistem Kode Unik 3 Digit Terakhir**: Mengacak 3 digit kode unik (1 - 999) secara otomatis di background pada nominal transfer untuk membedakan transaksi antar pembeli dengan mudah.
-- 🏪 **Panel Toko Multi-Kategori Interaktif (`/panel`)**: Tampilan katalog toko publik terelompok rapi per kategori dengan balasan privat (*Ephemeral*) tanpa mengotori channel toko.
-- 🚀 **Direct 1-Click Ticket Jump Button**: Pembeli dapat langsung lompat ke channel privat tiketnya hanya dengan 1x klik tombol `🚀 Buka Channel Tiket Kamu`.
-- ❌ **Rejection Reason Modal & Revision Workflow**: Admin dapat menginput alasan penolakan bukti transfer spesifik via form modal, dan pembeli dapat meng-upload foto revisi secara langsung di channel tiket.
-- 🎫 **Sistem Tiket Privat Otomatis**: Setiap pembeli mendapatkan text channel privat khusus (`#<kode-item>-<hash>`) di bawah Kategori Discord yang telah ditentukan.
-- 💳 **Verifikasi Pembayaran QRIS**: Pengiriman gambar QRIS asli toko, verifikasi transfer akurat, dan konfirmasi barang diterima oleh pembeli.
-- 📸 **Reply-Based Proof of Delivery**: Admin cukup membalas (*reply*) pesan notifikasi transaksi dengan meng-upload foto bukti pengiriman item untuk meneruskannya ke tiket pembeli.
-- 🏆 **Papan Peringkat Live Top Spenders (`/leaderboard`)**: Leaderboard 10 pembeli terbanyak yang ter-update otomatis secara real-time di channel terpisah (`#leaderboard`).
-- 📊 **Laporan Excel All-Time & Bulanan Otomatis (`/exportreport`)**: 
-  - **All-Time Export**: 1-Klik dari `/adminpanel` untuk mengunduh rekapitulasi seluruh transaksi penjualan toko sejak awal.
-  - **Bulanan Otomatis**: Pengiriman otomatis rekap bulanan format Excel (`.xlsx`) setiap tanggal 1 jam 00:05 WIB ke channel `#laporan`.
-- 🗄️ **Dukungan Dual Database (Supabase Cloud & Local SQLite)**: Modul Supabase Cloud untuk produksi utama + native SQLite engine untuk deployment Biznet GIO VPS.
-- 🏗️ **Arsitektur Modular & Ringkas**: `index.js` dirancang ringan (~110 baris) dengan handler terpisah (`buyerHandler.js`, `adminHandler.js`, `proofDetector.js`, `ticketManager.js`).
+</div>
 
 ---
 
-## 📂 Struktur Proyek (Directory Structure)
+## Tentang
 
-```text
-payment-bot/
-├── 📁 .github/workflows/   # GitHub Actions Keep-Alive Supabase Workflow
-│   └── keep-alive-supabase.yml
-├── 📁 commands/            # 14 Slash Commands Terstruktur
-│   ├── addadmin.js
-│   ├── additem.js
-│   ├── adminhelp.js
-│   ├── adminpanel.js
-│   ├── deladmin.js
-│   ├── delcategory.js
-│   ├── delitem.js
-│   ├── editcategory.js
-│   ├── edititem.js
-│   ├── exportreport.js
-│   ├── help.js
-│   ├── leaderboard.js
-│   ├── listadmin.js
-│   └── panel.js
-├── 📁 config/              # Konfigurasi Data Toko & Admin
-│   ├── admins.json
-│   ├── category_emojis.json
-│   ├── items.js
-│   └── panel_config.json
-├── 📁 handlers/            # [BARU] Handler Spesifik Interaksi Discord
-│   ├── adminHandler.js     # Handler Approve, Reject Modal, & Reply Admin
-│   ├── buyerHandler.js     # Handler Select Menu Toko, Modals, QRIS, & SOS
-│   └── proofDetector.js    # Auto-Detector Screenshot Bukti Transfer & Bukti Kirim
-├── 📁 services/            # Modul Backend Utama
-│   ├── adminPanelGUI.js    # Handler Dashboard GUI Admin (/adminpanel)
-│   ├── admins.js           # Pengelolaan Hak Akses Admin
-│   ├── panelManager.js     # Pengelolaan Embed Katalog & Leaderboard
-│   ├── reportManager.js    # Generator Laporan Penjualan Excel (.xlsx)
-│   ├── roblox.js           # Integrasi API Resmi Roblox
-│   ├── supabase.js         # Client Supabase PostgreSQL Cloud
-│   └── ticketManager.js    # Pengelolaan Siklus Hidup Tiket & Approval
-├── 📁 biznetgio/           # Sub-Folder Deployment Biznet GIO (Native SQLite Engine)
-├── .env                    # Variabel Rahasia Bot (Token & API Keys)
-├── .env.example            # Template Konfigurasi untuk Client
-├── .gitignore              # Proteksi File Rahasia & Modul Berat
-├── Procfile                # Konfigurasi Hosting Cloud Server (Railway/Heroku)
-├── deploy-commands.js      # Skrip Pendaftaran Slash Commands ke Discord API
-├── index.js                # Main Bot Gateway Gateway (~110 baris)
-└── package.json            # Manifest Dependensi Node.js
+Sistem toko lengkap di dalam Discord: pembeli melihat katalog, membuat tiket order, membayar via **QRIS**, lalu admin memverifikasi lewat panel. Semua transaksi tercatat dan bisa diekspor ke Excel setiap bulan.
+
+## Fitur
+
+### Untuk pembeli
+
+- Item dikelompokkan per kategori, lengkap dengan deskripsi dan harga.
+- Setiap transaksi dapat satu channel privat (*tiket*) yang otomatis dihapus saat kedaluwarsa.
+- Gambar QRIS statis ditampilkan langsung di dalam tiket, tanpa perlu keluar dari Discord.
+- `/panduan` menjelaskan alur pembelian dari awal sampai selesai.
+- Leaderboard peringkat pembeli berdasarkan total transaksi.
+
+### Untuk admin
+
+- Katalog dikelola lewat **panel GUI** (button & modal), bukan command manual.
+- Tambah/hapus admin beserta tingkat izinnya.
+- CRUD item dan kategori: tambah, ubah, hapus.
+- Rekap transaksi diekspor ke **Excel** setiap bulan oleh scheduler di dalam bot.
+- Tiket kedaluwarsa dibersihkan terjadwal di background.
+
+## Tech Stack
+
+| Bagian | Teknologi |
+| --- | --- |
+| Runtime | Node.js, CommonJS |
+| Bot | Discord.js v14 |
+| Database | Supabase (Postgres) + SQLite lokal (`better-sqlite3`) |
+| Laporan | ExcelJS |
+| Lainnya | `uuid`, GitHub Actions keep-alive |
+
+## Menjalankan
+
+### 1. Clone & install
+
+```bash
+git clone https://github.com/Ilhamaji/discord-payment-bot.git
+cd discord-payment-bot
+npm install
 ```
 
----
-
-## ⚙️ Konfigurasi Variabel Lingkungan (`.env`)
-
-Buat file `.env` di root direktori dan isi variabel berikut:
+### 2. Konfigurasi `.env`
 
 ```env
-# Credentials Bot Discord
-DISCORD_TOKEN=your_discord_bot_token_here
-DISCORD_CLIENT_ID=your_discord_client_id_here
-DISCORD_GUILD_ID=your_discord_guild_id_here
-OWNER_DISCORD_ID=your_discord_owner_id_here
+DISCORD_TOKEN=          # token bot
+CLIENT_ID=              # application ID
+GUILD_ID=               # server ID
+SUPABASE_URL=           # URL project Supabase
+SUPABASE_KEY=           # service role key
+```
 
-# Channel & Category IDs Server Discord
-TICKET_CATEGORY_ID=your_ticket_category_id_here
-ADMIN_CHANNEL_ID=your_admin_channel_id_here
-REPORT_CHANNEL_ID=your_report_channel_id_here
+Lihat `.env.example` untuk daftar lengkap.
 
-# URL Gambar QRIS Toko
-QRIS_IMAGE_URL=https://your-domain.com/qris-image.jpg
+### 3. Daftarkan slash command
 
-# Credentials Database Supabase
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_KEY=your_supabase_service_role_key_here
+```bash
+npm run deploy
+```
+
+### 4. Jalankan bot
+
+```bash
+npm start
+```
+
+### 5. Siapkan QRIS
+
+Ganti `assets/qris.jpg` dengan gambar QRIS milikmu.
+
+## Struktur
+
+```
+index.js                  # entrypoint + anti-crash handler
+commands/                 # slash command (additem, panel, exportreport, ...)
+handlers/                 # routing interaksi (admin, order, ticket)
+services/                 # panelManager, reportManager, ticketManager, adminPanelGUI
+assets/qris.jpg           # gambar QR pembayaran
+.github/workflows/        # keep-alive Supabase (mencegah project paused)
+```
+
+## Alur Order
+
+```
+/panduan -> pilih kategori -> pilih item -> tiket dibuat
+        -> tampilkan QRIS -> upload bukti bayar
+        -> admin verifikasi di panel -> status selesai -> masuk laporan
 ```
 
 ---
 
-## 🚀 Panduan Instalasi & Memulai (Quick Start)
-
-### 1. Prasyarat System
-- Node.js versi 18.x atau yang lebih baru.
-- Akun Bot Discord dari Discord Developer Portal.
-- Project Supabase (Free / Paid Tier) atau SQLite untuk Biznet GIO.
-
-### 2. Langkah Instalasi
-
-1. Clone repositori:
-   ```bash
-   git clone https://github.com/Ilhamaji/bot-payment.git
-   cd bot-payment
-   ```
-
-2. Install dependensi Node.js:
-   ```bash
-   npm install
-   ```
-
-3. Daftarkan Perintah Slash Command:
-   ```bash
-   node deploy-commands.js
-   ```
-
-4. Jalankan Bot:
-   ```bash
-   npm run start
-   ```
-
----
-
-## 📊 Manajemen Laporan Penjualan Excel
-
-Bot menyediakan 3 skenario ekspor laporan penjualan yang fleksibel:
-
-1. **All-Time Sales Export (Seluruh Data)**:
-   - Akses via **`/adminpanel`** -> tekan **`📊 Export Laporan Excel`**. File `.xlsx` berisi seluruh riwayat transaksi sukses sejak awal toko berdiri akan langsung terbuat.
-2. **Laporan Otomatis Bulanan**:
-   - Setiap tanggal 1 jam 00:05 WIB, bot secara otomatis mengirimkan rekap bulan sebelumnya ke channel `#laporan`.
-3. **Laporan Spesifik Bulan/Tahun**:
-   - Gunakan perintah **`/exportreport bulan:X tahun:YYYY`** untuk mengambil rekap penjualan bulan tertentu.
-
----
-
-## 📄 Lisensi
-
-Hak Cipta © 2026 **Bebey Store Official**. Seluruh Hak Cipta Dilindungi.
+<div align="center">
+Dibuat oleh <a href="https://github.com/Ilhamaji">Ilham Aji</a>
+</div>
