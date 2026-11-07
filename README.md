@@ -2,51 +2,53 @@
 
 # Discord Payment Bot
 
-**Bot Discord untuk toko produk digital** — katalog item, checkout QRIS, tiket order otomatis, panel admin, dan laporan Excel bulanan.
+**A Discord storefront for digital products** — item catalogue, QRIS checkout, automated order tickets, an admin panel, and monthly Excel reports.
 
 [![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)](#)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 [![discord.js](https://img.shields.io/badge/discord.js-v14-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.js.org)
 
+**English** · [Bahasa Indonesia](README.id.md)
+
 </div>
 
 ---
 
-## Tentang
+## About
 
-Sistem toko lengkap di dalam Discord: pembeli melihat katalog, membuat tiket order, membayar via **QRIS**, lalu admin memverifikasi lewat panel. Semua transaksi tercatat dan bisa diekspor ke Excel setiap bulan.
+A complete storefront that lives inside Discord. Buyers browse the catalogue, open an order ticket, pay by **QRIS**, and an admin confirms the payment from a panel. Every transaction is recorded and can be exported to Excel at the end of each month.
 
-## Fitur
+## Features
 
-### Untuk pembeli
+### For buyers
 
-- Item dikelompokkan per kategori, lengkap dengan deskripsi dan harga.
-- Setiap transaksi dapat satu channel privat (*tiket*) yang otomatis dihapus saat kedaluwarsa.
-- Gambar QRIS statis ditampilkan langsung di dalam tiket, tanpa perlu keluar dari Discord.
-- `/panduan` menjelaskan alur pembelian dari awal sampai selesai.
-- Leaderboard peringkat pembeli berdasarkan total transaksi.
+- Items are grouped by category, each with a description and price.
+- Every order gets a private channel (a *ticket*) that is deleted automatically once it expires.
+- A static QRIS image is shown inside the ticket, so the buyer never leaves Discord.
+- `/panduan` walks through the purchase flow end to end.
+- A leaderboard ranks buyers by total spend.
 
-### Untuk admin
+### For admins
 
-- Katalog dikelola lewat **panel GUI** (button & modal), bukan command manual.
-- Tambah/hapus admin beserta tingkat izinnya.
-- CRUD item dan kategori: tambah, ubah, hapus.
-- Rekap transaksi diekspor ke **Excel** setiap bulan oleh scheduler di dalam bot.
-- Tiket kedaluwarsa dibersihkan terjadwal di background.
+- The catalogue is managed through a **GUI panel** (buttons and modals) rather than manual commands.
+- Add or remove admins along with their permission level.
+- Full CRUD for items and categories.
+- A scheduler inside the bot exports a transaction recap to **Excel** every month.
+- Expired tickets are cleaned up on a background schedule.
 
 ## Tech Stack
 
-| Bagian | Teknologi |
+| Layer | Technology |
 | --- | --- |
 | Runtime | Node.js, CommonJS |
 | Bot | Discord.js v14 |
-| Database | Supabase (Postgres) + SQLite lokal (`better-sqlite3`) |
-| Laporan | ExcelJS |
-| Lainnya | `uuid`, GitHub Actions keep-alive |
+| Database | Supabase (Postgres) + local SQLite (`better-sqlite3`) |
+| Reporting | ExcelJS |
+| Other | `uuid`, GitHub Actions keep-alive |
 
-## Menjalankan
+## Getting Started
 
-### 1. Clone & install
+### 1. Clone and install
 
 ```bash
 git clone https://github.com/Ilhamaji/discord-payment-bot.git
@@ -54,55 +56,55 @@ cd discord-payment-bot
 npm install
 ```
 
-### 2. Konfigurasi `.env`
+### 2. Configure `.env`
 
 ```env
-DISCORD_TOKEN=          # token bot
+DISCORD_TOKEN=          # bot token
 CLIENT_ID=              # application ID
 GUILD_ID=               # server ID
-SUPABASE_URL=           # URL project Supabase
+SUPABASE_URL=           # Supabase project URL
 SUPABASE_KEY=           # service role key
 ```
 
-Lihat `.env.example` untuk daftar lengkap.
+See `.env.example` for the full list.
 
-### 3. Daftarkan slash command
+### 3. Register slash commands
 
 ```bash
 npm run deploy
 ```
 
-### 4. Jalankan bot
+### 4. Start the bot
 
 ```bash
 npm start
 ```
 
-### 5. Siapkan QRIS
+### 5. Set up QRIS
 
-Ganti `assets/qris.jpg` dengan gambar QRIS milikmu.
+Replace `assets/qris.jpg` with your own QRIS image.
 
-## Struktur
+## Project Layout
 
 ```
-index.js                  # entrypoint + anti-crash handler
-commands/                 # slash command (additem, panel, exportreport, ...)
-handlers/                 # routing interaksi (admin, order, ticket)
+index.js                  # entrypoint + anti-crash handlers
+commands/                 # slash commands (additem, panel, exportreport, ...)
+handlers/                 # interaction routing (admin, order, ticket)
 services/                 # panelManager, reportManager, ticketManager, adminPanelGUI
-assets/qris.jpg           # gambar QR pembayaran
-.github/workflows/        # keep-alive Supabase (mencegah project paused)
+assets/qris.jpg           # payment QR image
+.github/workflows/        # Supabase keep-alive (stops the project from pausing)
 ```
 
-## Alur Order
+## Order Flow
 
 ```
-/panduan -> pilih kategori -> pilih item -> tiket dibuat
-        -> tampilkan QRIS -> upload bukti bayar
-        -> admin verifikasi di panel -> status selesai -> masuk laporan
+/panduan -> pick a category -> pick an item -> ticket created
+        -> QRIS shown -> buyer uploads proof of payment
+        -> admin confirms in the panel -> order closed -> counted in the report
 ```
 
 ---
 
 <div align="center">
-Dibuat oleh <a href="https://github.com/Ilhamaji">Ilham Aji</a>
+Built by <a href="https://github.com/Ilhamaji">Ilham Aji</a>
 </div>
